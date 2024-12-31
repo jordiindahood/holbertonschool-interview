@@ -23,7 +23,7 @@ def canUnlockAll(boxes):
             if not opened_boxes[j]:
                 opened_boxes[j] = 1
         if all(opened_boxes):
-            return True    
+            return True
     # if opened boxes has 1 values means it can be opened
     if all(opened_boxes):
         return True
