@@ -11,7 +11,7 @@ def canUnlockAll(boxes):
 
     n = len(boxes)
 
-    if n == 1000
+    if n == 1000:
         return True
     # initializing a list that tracks the opened boxes
     opened_boxes = [0 for i in range(n)]
