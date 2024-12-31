@@ -10,9 +10,7 @@ def canUnlockAll(boxes):
     """
 
     n = len(boxes)
-    if n >= 777:
-        print(boxes)
-        raise
+
     # initializing a list that tracks the opened boxes
     opened_boxes = [0 for i in range(n)]
     # first box is always opened
@@ -24,7 +22,8 @@ def canUnlockAll(boxes):
                 return False
             if not opened_boxes[j]:
                 opened_boxes[j] = 1
-
+        if all(opened_boxes):
+            return True    
     # if opened boxes has 1 values means it can be opened
     if all(opened_boxes):
         return True
