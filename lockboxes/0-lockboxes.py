@@ -23,7 +23,7 @@ def canUnlockAll(boxes):
     for i in range(n - 1):
         for j in boxes[i]:
             if j >= n:
-                continue
+                return False
             if not opened_boxes[j]:
                 opened_boxes[j] = 1
         if all(opened_boxes):
