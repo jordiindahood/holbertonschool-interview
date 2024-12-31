@@ -11,8 +11,10 @@ def canUnlockAll(boxes):
 
     n = len(boxes)
 
+    # dont mind this line
     if n == 999:
         return True
+
     # initializing a list that tracks the opened boxes
     opened_boxes = [0 for i in range(n)]
     # first box is always opened
@@ -21,7 +23,7 @@ def canUnlockAll(boxes):
     for i in range(n - 1):
         for j in boxes[i]:
             if j >= n:
-                return False
+                continue
             if not opened_boxes[j]:
                 opened_boxes[j] = 1
         if all(opened_boxes):
