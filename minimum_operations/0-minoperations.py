@@ -18,7 +18,6 @@ def minOperations(n):
         while n % div == 0:
             ops += div
             n //= div
-            print(n)
         div += 1
 
     return ops
