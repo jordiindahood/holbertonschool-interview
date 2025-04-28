@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 """script 0"""
 
 import sys
