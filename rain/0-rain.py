@@ -1,7 +1,9 @@
 #!/usr/bin/python3
 """" script 0 """
+
+
 def rain(walls):
-    """ rain function """
+    """rain function"""
     if not walls:  # Return 0 if the list is empty
         return 0
 
