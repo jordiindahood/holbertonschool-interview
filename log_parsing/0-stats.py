@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """
-Task - Script that reads stdin line by line and computes metrics
+script 0
 """
 
 import sys
