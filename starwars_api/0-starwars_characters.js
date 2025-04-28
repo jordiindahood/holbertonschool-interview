@@ -1,54 +1,54 @@
 #!/usr/bin/node
-const request = require('request');
 
-// Get the movie ID from the command line argument
+const https = require('https');
+
 const movieId = process.argv[2];
+const apiUrl = `https://swapi-api.hbtn.io/api/films/${movieId}/`;
 
-// Function to fetch character names from the Star Wars API
-function getStarWarsCharacters(movieId) {
-  const url = `https://swapi.dev/api/films/${movieId}/`;
+https.get(apiUrl, (response) => {
+  let data = '';
 
-  // Make a request to fetch the movie data
-  request(url, function (err, response, body) {
-    if (err) {
-      console.error('Error fetching data:', err);
-      return;
-    }
-
-    if (response.statusCode !== 200) {
-      console.error('Error: Unable to fetch data');
-      return;
-    }
-
-    // Parse the response body
-    const movieData = JSON.parse(body);
-    const characterUrls = movieData.characters;
-
-    // Fetch each character's data
-    characterUrls.forEach(function (characterUrl) {
-      request(characterUrl, function (err, response, body) {
-        if (err) {
-          console.error('Error fetching character data:', err);
-          return;
-        }
-
-        if (response.statusCode !== 200) {
-          console.error('Error: Unable to fetch character data');
-          return;
-        }
-
-        // Parse and print the character name
-        const characterData = JSON.parse(body);
-        console.log(characterData.name);
-      });
-    });
+  response.on('data', (chunk) => {
+    data += chunk;
   });
-}
 
-// Validate input and call the function
-if (!movieId) {
-  console.log('Usage: ./0-starwars_characters.js <Movie ID>');
-  process.exit(1);
-}
+  response.on('end', () => {
+    if (response.statusCode !== 200) {
+      console.error(`Error: Status code ${response.statusCode}`);
+      return;
+    }
 
-getStarWarsCharacters(movieId);
+    const filmData = JSON.parse(data);
+    const charactersUrls = filmData.characters;
+
+    const fetchCharacterNames = (urls, index = 0) => {
+      if (index >= urls.length) return;
+
+      https.get(urls[index], (charResponse) => {
+        let charData = '';
+
+        charResponse.on('data', (chunk) => {
+          charData += chunk;
+        });
+
+        charResponse.on('end', () => {
+          if (charResponse.statusCode !== 200) {
+            console.error(`Error: Status code ${charResponse.statusCode}`);
+            return;
+          }
+
+          const characterData = JSON.parse(charData);
+          console.log(characterData.name);
+
+          fetchCharacterNames(urls, index + 1);
+        });
+      }).on('error', (charError) => {
+        console.error(charError);
+      });
+    };
+
+    fetchCharacterNames(charactersUrls);
+  });
+}).on('error', (error) => {
+  console.error(error);
+});
