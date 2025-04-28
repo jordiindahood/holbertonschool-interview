@@ -19,7 +19,7 @@ if __name__ == "__main__":
     file_size = 0
 
     def parse_line(line):
-        """ Read, parse and grab data"""
+        """ parse"""
         try:
             parsed_line = line.split()
             status_code = parsed_line[-2]
@@ -30,7 +30,7 @@ if __name__ == "__main__":
             return 0
 
     def print_stats():
-        """print stats in ascending order"""
+        """ print """
         print("File size: {}".format(file_size))
         for key in sorted(st_code.keys()):
             if st_code[key]:
