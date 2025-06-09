@@ -6,22 +6,23 @@
  */
 void heapify_down(heap_t *node)
 {
-    heap_t *largest = node;
-    heap_t *left = node->left;
-    heap_t *right = node->right;
+	heap_t *largest = node;
+	heap_t *left = node->left;
+	heap_t *right = node->right;
 
-    if (left && left->n > largest->n)
-        largest = left;
-    if (right && right->n > largest->n)
-        largest = right;
+	if (left && left->n > largest->n)
+		largest = left;
+	if (right && right->n > largest->n)
+		largest = right;
 
-    if (largest != node)
-    {
-        int temp = node->n;
-        node->n = largest->n;
-        largest->n = temp;
-        heapify_down(largest);
-    }
+	if (largest != node)
+	{
+		int temp = node->n;
+
+		node->n = largest->n;
+		largest->n = temp;
+		heapify_down(largest);
+	}
 }
 
 /**
@@ -31,11 +32,13 @@ void heapify_down(heap_t *node)
  */
 int get_height(const heap_t *node)
 {
-    if (!node)
-        return (0);
-    int left = get_height(node->left);
-    int right = get_height(node->right);
-    return (1 + (left > right ? left : right));
+	if (!node)
+		return (0);
+
+	int left = get_height(node->left);
+	int right = get_height(node->right);
+
+	return (1 + (left > right ? left : right));
 }
 
 /**
@@ -46,13 +49,15 @@ int get_height(const heap_t *node)
  */
 heap_t *get_last_node(heap_t *root, int height)
 {
-    if (!root)
-        return (NULL);
-    if (height == 1)
-        return (root);
-    heap_t *right = get_last_node(root->right, height - 1);
-    heap_t *left = get_last_node(root->left, height - 1);
-    return (right ? right : left);
+	if (!root)
+		return (NULL);
+	if (height == 1)
+		return (root);
+
+	heap_t *right = get_last_node(root->right, height - 1);
+	heap_t *left = get_last_node(root->left, height - 1);
+
+	return (right ? right : left);
 }
 
 /**
@@ -62,29 +67,29 @@ heap_t *get_last_node(heap_t *root, int height)
  */
 int heap_extract(heap_t **root)
 {
-    if (!root || !*root)
-        return (0);
+	if (!root || !*root)
+		return (0);
 
-    int value = (*root)->n;
+	int value = (*root)->n;
 
-    if (!(*root)->left && !(*root)->right)
-    {
-        free(*root);
-        *root = NULL;
-        return (value);
-    }
+	if (!(*root)->left && !(*root)->right)
+	{
+		free(*root);
+		*root = NULL;
+		return (value);
+	}
 
-    int height = get_height(*root);
-    heap_t *last = get_last_node(*root, height);
+	int height = get_height(*root);
+	heap_t *last = get_last_node(*root, height);
 
-    if (last->parent->left == last)
-        last->parent->left = NULL;
-    else
-        last->parent->right = NULL;
+	if (last->parent->left == last)
+		last->parent->left = NULL;
+	else
+		last->parent->right = NULL;
 
-    (*root)->n = last->n;
-    free(last);
-    heapify_down(*root);
+	(*root)->n = last->n;
+	free(last);
+	heapify_down(*root);
 
-    return (value);
+	return (value);
 }
